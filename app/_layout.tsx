@@ -2,7 +2,7 @@ import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 function RouteGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const isAuthenticated = false;
+  const isAuthenticated = true;
   useEffect(() => {
     if (!isAuthenticated) {
       router.replace("/auth");
