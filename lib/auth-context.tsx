@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ID, Models } from "react-native-appwrite";
 import { account } from "./appwrite";
 
@@ -11,6 +11,23 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<Models.User<Models.Preferences> | null>(
+    null
+  );
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const session = await account.get();
+      setUser(session);
+    } catch (error) {
+      setUser(null);
+    }
+  };
+
   const signUp = async (email: string, password: string) => {
     try {
       await account.create(ID.unique(), email, password);
@@ -43,4 +60,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useAuth() {}
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}
