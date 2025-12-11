@@ -1,9 +1,9 @@
 import { Text, View } from "react-native";
 
-export default function LoginScreen() {
+export default function StreaksPage() {
   return (
     <View>
-      <Text>Login Screen</Text>s
+      <Text>Streaks Screen</Text>
     </View>
   );
 }
